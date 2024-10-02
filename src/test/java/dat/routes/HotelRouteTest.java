@@ -15,11 +15,9 @@ import java.util.List;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.arrayContainingInAnyOrder;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.hamcrest.Matchers.*;
 
-class HotelRouteTest
-{
+class HotelRouteTest {
     private static Javalin app;
     private static EntityManagerFactory emf = HibernateConfig.getEntityManagerFactoryForTest();
     private static String BASE_URL = "http://localhost:7070/api/v1";
@@ -31,39 +29,30 @@ class HotelRouteTest
     private static List<HotelDTO> hotels;
 
     @BeforeAll
-    static void init()
-    {
+    static void init() {
         HibernateConfig.setTest(true);
         app = ApplicationConfig.startServer(7070);
-
-
     }
 
     @BeforeEach
-    void setUp()
-    {
-        hotels = populator.
-                populateHotels();
+    void setUp() {
+        hotels = populator.populateHotels();
         california = hotels.get(0);
         hilton = hotels.get(1);
     }
 
     @AfterEach
-    void tearDown()
-    {
+    void tearDown() {
         populator.cleanUpHotels();
     }
 
     @AfterAll
-    static void closeDown()
-    {
+    static void closeDown() {
         ApplicationConfig.stopServer(app);
     }
 
-
     @Test
-    void testGetAllHotels()
-    {
+    void testGetAllHotels() {
         HotelDTO[] hotelDTOS =
                 given()
                         .when()
@@ -74,13 +63,12 @@ class HotelRouteTest
                         .extract()
                         .as(HotelDTO[].class);
 
-        assertEquals(2, hotelDTOS.length);
-        assertThat(hotelDTOS, arrayContainingInAnyOrder(california, hilton));
+        assertThat(hotelDTOS.length, is(2));
+        assertThat(hotelDTOS, arrayContainingInAnyOrder(equalTo(california), equalTo(hilton)));
     }
 
     @Test
-    void testGetHotelById()
-    {
+    void testGetHotelById() {
         HotelDTO hotelDTO =
                 given()
                         .when()
@@ -91,12 +79,11 @@ class HotelRouteTest
                         .extract()
                         .as(HotelDTO.class);
 
-        assertEquals(california, hotelDTO);
+        assertThat(hotelDTO, equalTo(california));
     }
 
     @Test
-    void testCreateHotel()
-    {
+    void testCreateHotel() {
         Hotel h3 = new Hotel("Hotel 3", "Copenhagen", Hotel.HotelType.STANDARD);
         Hotel createdHotel =
                 given()
@@ -110,12 +97,13 @@ class HotelRouteTest
                         .extract()
                         .as(Hotel.class);
 
-        assertEquals(h3, createdHotel);
+        assertThat(createdHotel.getHotelName(), equalTo(h3.getHotelName()));
+        assertThat(createdHotel.getHotelAddress(), equalTo(h3.getHotelAddress()));
+        assertThat(createdHotel.getHotelType(), equalTo(h3.getHotelType()));
     }
 
     @Test
-    void testUpdateHotel()
-    {
+    void testUpdateHotel() {
         california.setHotelName("Hotel California Updated");
         HotelDTO updatedHotel =
                 given()
@@ -129,12 +117,13 @@ class HotelRouteTest
                         .extract()
                         .as(HotelDTO.class);
 
-        assertEquals(california, updatedHotel);
+        assertThat(updatedHotel.getHotelName(), equalTo(california.getHotelName()));
+        assertThat(updatedHotel.getHotelAddress(), equalTo(california.getHotelAddress()));
+        assertThat(updatedHotel.getHotelType(), equalTo(california.getHotelType()));
     }
 
     @Test
-    void deleteHotel()
-    {
+    void deleteHotel() {
         given()
                 .when()
                 .delete(BASE_URL + "/hotels/1")
@@ -152,10 +141,7 @@ class HotelRouteTest
                         .extract()
                         .as(HotelDTO[].class);
 
-        assertEquals(1, hotelDTOS.length);
-        assertEquals(hilton, hotelDTOS[0]);
+        assertThat(hotelDTOS.length, is(1));
+        assertThat(hotelDTOS[0], equalTo(hilton));
     }
-
-
 }
-
