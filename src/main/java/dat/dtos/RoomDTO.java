@@ -21,6 +21,13 @@ public class RoomDTO {
         this.roomType = room.getRoomType();
     }
 
+    public RoomDTO(Integer roomNumber, Integer roomPrice, Room.RoomType roomType)
+    {
+        this.roomNumber = roomNumber;
+        this.roomPrice = roomPrice;
+        this.roomType = roomType;
+    }
+
     public static List<RoomDTO> toRoomDTOList(List<Room> rooms) {
         return List.of(rooms.stream().map(RoomDTO::new).toArray(RoomDTO[]::new));
     }
