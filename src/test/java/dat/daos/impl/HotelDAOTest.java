@@ -1,15 +1,13 @@
 package dat.daos.impl;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class HotelDAOTest
 {
-    @BeforeAll
-    static void setUpAll()
-    {
-    }
 
     @BeforeEach
     void setUp()
@@ -18,11 +16,6 @@ class HotelDAOTest
 
     @AfterEach
     void tearDown()
-    {
-    }
-
-    @AfterAll
-    static void tearDownAll()
     {
     }
 
