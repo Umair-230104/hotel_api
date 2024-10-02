@@ -1,3 +1,5 @@
+package dat;
+
 import dat.daos.impl.HotelDAO;
 import dat.daos.impl.RoomDAO;
 import dat.dtos.HotelDTO;
