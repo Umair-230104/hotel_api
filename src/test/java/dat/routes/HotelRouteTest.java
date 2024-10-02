@@ -33,8 +33,9 @@ class HotelRouteTest
     @BeforeAll
     static void init()
     {
-        app = ApplicationConfig.startServer(7070);
         HibernateConfig.setTest(true);
+        app = ApplicationConfig.startServer(7070);
+
 
     }
 
