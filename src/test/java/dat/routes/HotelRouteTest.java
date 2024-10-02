@@ -72,7 +72,7 @@ class HotelRouteTest
                         .extract()
                         .as(HotelDTO[].class);
 
-        assertEquals(2, hotelDTOS.length);
+        assertEquals(1, hotelDTOS.length);
         assertThat(hotelDTOS, arrayContainingInAnyOrder(california, hilton));
     }
 
