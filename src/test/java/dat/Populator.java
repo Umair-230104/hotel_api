@@ -81,7 +81,7 @@ public class Populator
             em.getTransaction().begin();
             em.createQuery("DELETE FROM Room").executeUpdate();
             em.createQuery("DELETE FROM Hotel").executeUpdate();
-            em.createNativeQuery("ALTER SEQUENCE hotel_hotel_seq RESTART WITH 1").executeUpdate();
+            em.createNativeQuery("ALTER SEQUENCE hotel_hotel_id_seq RESTART WITH 1").executeUpdate();
             em.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();

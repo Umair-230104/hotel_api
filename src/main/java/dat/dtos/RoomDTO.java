@@ -1,5 +1,7 @@
 package dat.dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import dat.entities.Room;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,11 +10,20 @@ import java.util.List;
 
 @NoArgsConstructor
 @Getter
+
 public class RoomDTO {
+    @JsonProperty("id")
     private Integer Id;
+
+
+    @JsonProperty("roomNumber")
     private Integer roomNumber;
-    private Integer roomPrice;
+
+    @JsonProperty("roomType")
     private Room.RoomType roomType;
+
+    @JsonProperty("roomPrice")
+    private Integer roomPrice;
 
     public RoomDTO(Room room) {
         this.Id = room.getRoomId();

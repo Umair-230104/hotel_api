@@ -6,6 +6,7 @@ import dat.config.HibernateConfig;
 import dat.daos.impl.HotelDAO;
 import dat.daos.impl.RoomDAO;
 import dat.dtos.HotelDTO;
+import dat.entities.Hotel;
 import io.javalin.Javalin;
 import jakarta.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.*;
@@ -72,8 +73,86 @@ class HotelRouteTest
                         .extract()
                         .as(HotelDTO[].class);
 
-        assertEquals(1, hotelDTOS.length);
+        assertEquals(2, hotelDTOS.length);
         assertThat(hotelDTOS, arrayContainingInAnyOrder(california, hilton));
+    }
+
+    @Test
+    void testGetHotelById()
+    {
+        HotelDTO hotelDTO =
+                given()
+                        .when()
+                        .get(BASE_URL + "/hotels/1")
+                        .then()
+                        .log().all()
+                        .statusCode(200)
+                        .extract()
+                        .as(HotelDTO.class);
+
+        assertEquals(california, hotelDTO);
+    }
+
+    @Test
+    void testCreateHotel()
+    {
+        Hotel h3 = new Hotel("Hotel 3", "Copenhagen", Hotel.HotelType.STANDARD);
+        Hotel createdHotel =
+                given()
+                        .contentType("application/json")
+                        .body(h3)
+                        .when()
+                        .post(BASE_URL + "/hotels")
+                        .then()
+                        .log().all()
+                        .statusCode(201)
+                        .extract()
+                        .as(Hotel.class);
+
+        assertEquals(h3, createdHotel);
+    }
+
+    @Test
+    void testUpdateHotel()
+    {
+        california.setHotelName("Hotel California Updated");
+        HotelDTO updatedHotel =
+                given()
+                        .contentType("application/json")
+                        .body(california)
+                        .when()
+                        .put(BASE_URL + "/hotels/1")
+                        .then()
+                        .log().all()
+                        .statusCode(200)
+                        .extract()
+                        .as(HotelDTO.class);
+
+        assertEquals(california, updatedHotel);
+    }
+
+    @Test
+    void deleteHotel()
+    {
+        given()
+                .when()
+                .delete(BASE_URL + "/hotels/1")
+                .then()
+                .log().all()
+                .statusCode(204);
+
+        HotelDTO[] hotelDTOS =
+                given()
+                        .when()
+                        .get(BASE_URL + "/hotels")
+                        .then()
+                        .log().all()
+                        .statusCode(200)
+                        .extract()
+                        .as(HotelDTO[].class);
+
+        assertEquals(1, hotelDTOS.length);
+        assertEquals(hilton, hotelDTOS[0]);
     }
 
 
