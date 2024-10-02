@@ -63,8 +63,8 @@ class HotelDAOTest
     void create()
     {
         HotelDTO hotelDTO = new HotelDTO();
-        hotelDTO.setHotelName("Test Hotel");
-        hotelDTO.setHotelAddress("123 Test Street");
+//        hotelDTO.setHotelName("Test Hotel");
+//        hotelDTO.setHotelAddress("123 Test Street");
         //hotelDTO.setHotelType("Luxury");
 
         HotelDTO createdHotel = hotelDAO.create(hotelDTO);
