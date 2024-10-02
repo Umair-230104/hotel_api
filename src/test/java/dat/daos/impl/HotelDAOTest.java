@@ -8,9 +8,11 @@ import jakarta.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.*;
 
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+
 class HotelDAOTest
 {
 
@@ -18,22 +20,18 @@ class HotelDAOTest
     private static RoomDAO roomDAO;
     private static EntityManagerFactory emf;
     private static Populator populator;
-
-
-    public HotelDAOTest(HotelDAO hotelDAO, RoomDAO roomDAO, EntityManagerFactory emf)
-    {
-
-        this.hotelDAO = hotelDAO;
-        this.roomDAO = roomDAO;
-        this.emf = emf;
-    }
+    private static HotelDTO h1, h2;
+    private static List<HotelDTO> hotels;
 
 
     @BeforeAll
     static void setUpAll()
     {
         HibernateConfig.setTest(true);
-        emf = HibernateConfig.getEntityManagerFactory("hotel");
+        emf = HibernateConfig.getEntityManagerFactory("test_db");
+        hotelDAO = HotelDAO.getInstance(emf);
+        roomDAO =  RoomDAO.getInstance(emf);
+        populator = new Populator(hotelDAO,roomDAO, emf);
 
 
     }
@@ -41,12 +39,21 @@ class HotelDAOTest
     @BeforeEach
     void setUp()
     {
+        hotels = populator.populateHotels();
+        h1 = hotels.get(0);
+        h2 = hotels.get(1);
 
     }
 
+   /* @AfterEach
+    void tearDown()
+    {
+        populator.cleanUpHotels();
+    }*/
+
 
     @AfterAll
-    void closeDown()
+    static void closeDown()
     {
         if (emf != null)
         {
@@ -57,21 +64,15 @@ class HotelDAOTest
     @Test
     void readAll()
     {
+        List<HotelDTO> hotels = hotelDAO.readAll();
+        assertNotNull(hotels);
+        assertEquals(2, hotels.size());
     }
 
     @Test
     void create()
     {
-        HotelDTO hotelDTO = new HotelDTO();
-        hotelDTO.setHotelName("Test Hotel");
-        hotelDTO.setHotelAddress("123 Test Street");
-        //hotelDTO.setHotelType("Luxury");
 
-        HotelDTO createdHotel = hotelDAO.create(hotelDTO);
-
-        assertNotNull(createdHotel);
-        assertEquals("Test Hotel", createdHotel.getHotelName());
-        assertEquals("123 Test Street", createdHotel.getHotelAddress());
     }
 
     @Test

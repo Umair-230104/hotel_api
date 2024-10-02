@@ -1,5 +1,6 @@
 package dat;
 
+import dat.config.HibernateConfig;
 import dat.daos.impl.HotelDAO;
 import dat.daos.impl.RoomDAO;
 import dat.dtos.HotelDTO;
@@ -7,7 +8,9 @@ import dat.dtos.RoomDTO;
 import dat.entities.Hotel;
 import dat.entities.Room;
 import jakarta.persistence.EntityManagerFactory;
+import org.jetbrains.annotations.NotNull;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -28,62 +31,56 @@ public class Populator
 
     public List<HotelDTO> populateHotels()
     {
-        Set<RoomDTO> calRooms = getCalRoomDTOs();
-        Set<RoomDTO> hilRooms = getHilRoomDTOs();
+        EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory("hotel");
 
-        // Create and save hotels using DAO
-        HotelDTO california, hilton;
+        Set<Room> calRooms = getCalRooms();
+        Set<Room> hilRooms = getHilRooms();
 
-        california = new HotelDTO("Hotel California", "California", Hotel.HotelType.LUXURY);
-        hilton = new HotelDTO("Hilton", "Copenhagen", Hotel.HotelType.STANDARD);
+        try (var em = emf.createEntityManager()) {
+            em.getTransaction().begin();
+            Hotel california = new Hotel("Hotel California", "California", Hotel.HotelType.LUXURY);
+            Hotel hilton = new Hotel("Hilton", "Copenhagen", Hotel.HotelType.STANDARD);
+            california.setRooms(calRooms);
+            hilton.setRooms(hilRooms);
+            em.persist(california);
+            em.persist(hilton);
+            em.getTransaction().commit();
 
-        HotelDTO savedCalifornia = hotelDao.create(california);
-        HotelDTO savedHilton = hotelDao.create(hilton);
-
-        // Add rooms to hotels
-        addRoomsToHotel(savedCalifornia, calRooms);
-        addRoomsToHotel(savedHilton, hilRooms);
-
-        return new ArrayList<>(List.of(savedCalifornia, savedHilton));
-    }
-
-    private void addRoomsToHotel(HotelDTO hotel, Set<RoomDTO> rooms)
-    {
-        for (RoomDTO room : rooms)
-        {
-            roomDao.addRoomToHotel(hotel.getId(), room);
+            return new ArrayList<>(List.of(new HotelDTO(california), new HotelDTO(hilton)));
         }
     }
 
-    private static Set<RoomDTO> getCalRoomDTOs()
-    {
-        RoomDTO r100 = new RoomDTO(100, 2520, Room.RoomType.SINGLE);
-        RoomDTO r101 = new RoomDTO(101, 2520, Room.RoomType.SINGLE);
-        RoomDTO r102 = new RoomDTO(102, 2520, Room.RoomType.SINGLE);
-        RoomDTO r103 = new RoomDTO(103, 2520, Room.RoomType.SINGLE);
-        RoomDTO r104 = new RoomDTO(104, 3200, Room.RoomType.DOUBLE);
-        RoomDTO r105 = new RoomDTO(105, 4500, Room.RoomType.SUITE);
+    @NotNull
+    private static Set<Room> getCalRooms() {
+        Room r100 = new Room(100, new BigDecimal(2520), Room.RoomType.SINGLE);
+        Room r101 = new Room(101, new BigDecimal(2520), Room.RoomType.SINGLE);
+        Room r102 = new Room(102, new BigDecimal(2520), Room.RoomType.SINGLE);
+        Room r103 = new Room(103, new BigDecimal(2520), Room.RoomType.SINGLE);
+        Room r104 = new Room(104, new BigDecimal(3200), Room.RoomType.DOUBLE);
+        Room r105 = new Room(105, new BigDecimal(4500), Room.RoomType.SUITE);
 
-        return Set.of(r100, r101, r102, r103, r104, r105);
+        Room[] roomArray = {r100, r101, r102, r103, r104, r105};
+        return Set.of(roomArray);
     }
 
-    private static Set<RoomDTO> getHilRoomDTOs()
-    {
-        RoomDTO r111 = new RoomDTO(111, 2520, Room.RoomType.SINGLE);
-        RoomDTO r112 = new RoomDTO(112, 2520, Room.RoomType.SINGLE);
-        RoomDTO r113 = new RoomDTO(113, 2520, Room.RoomType.SINGLE);
-        RoomDTO r114 = new RoomDTO(114, 2520, Room.RoomType.DOUBLE);
-        RoomDTO r115 = new RoomDTO(115, 3200, Room.RoomType.DOUBLE);
-        RoomDTO r116 = new RoomDTO(116, 4500, Room.RoomType.SUITE);
+    @NotNull
+    private static Set<Room> getHilRooms() {
+        Room r111 = new Room(111, new BigDecimal(2520), Room.RoomType.SINGLE);
+        Room r112 = new Room(112, new BigDecimal(2520), Room.RoomType.SINGLE);
+        Room r113 = new Room(113, new BigDecimal(2520), Room.RoomType.SINGLE);
+        Room r114 = new Room(114, new BigDecimal(2520), Room.RoomType.DOUBLE);
+        Room r115 = new Room(115, new BigDecimal(3200), Room.RoomType.DOUBLE);
+        Room r116 = new Room(116, new BigDecimal(4500), Room.RoomType.SUITE);
 
-        return Set.of(r111, r112, r113, r114, r115, r116);
+        Room[] roomArray = {r111, r112, r113, r114, r115, r116};
+        return Set.of(roomArray);
     }
 
     public void cleanUpHotels() {
         try (var em = emf.createEntityManager()) {
             em.getTransaction().begin();
             em.createQuery("DELETE FROM Hotel").executeUpdate();
-            em.createNativeQuery("ALTER SEQUENCE hotel_id_seq RESTART WITH 1").executeUpdate();
+            em.createNativeQuery("ALTER SEQUENCE hotel_hotel_id_seq RESTART WITH 1").executeUpdate();
             em.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
