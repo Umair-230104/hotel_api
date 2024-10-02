@@ -3,6 +3,7 @@ package dat.dtos;
 import dat.entities.Hotel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.HashSet;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Getter
+@Setter
 @NoArgsConstructor
 public class HotelDTO {
 

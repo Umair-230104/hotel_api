@@ -3,6 +3,7 @@ package dat.daos.impl;
 import dat.Populator;
 import dat.config.HibernateConfig;
 import dat.dtos.HotelDTO;
+import dat.entities.Hotel;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.*;
@@ -72,16 +73,31 @@ class HotelDAOTest
     @Test
     void create()
     {
+        HotelDTO h3 = new HotelDTO("Hotel 3", "Copenhagen", Hotel.HotelType.STANDARD);
+        HotelDTO createdHotel = hotelDAO.create(h3);
+        assertNotNull(createdHotel);
+        assertEquals(h3.getHotelName(), createdHotel.getHotelName());
+        assertEquals(h3.getHotelAddress(), createdHotel.getHotelAddress());
+        assertEquals(h3.getHotelType(), createdHotel.getHotelType());
 
     }
 
     @Test
     void update()
     {
+        h1.setHotelName("Hotel 1 Updated");
+        HotelDTO updatedHotel = hotelDAO.update(h1.getId(), h1);
+        assertNotNull(updatedHotel);
+        assertEquals(h1.getHotelName(), updatedHotel.getHotelName());
+        assertEquals(h1.getHotelAddress(), updatedHotel.getHotelAddress());
+        assertEquals(h1.getHotelType(), updatedHotel.getHotelType());
     }
 
     @Test
     void delete()
     {
+        hotelDAO.delete(h1.getId());
+        List<HotelDTO> hotels = hotelDAO.readAll();
+        assertEquals(1, hotels.size());
     }
 }
