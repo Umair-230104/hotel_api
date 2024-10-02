@@ -77,12 +77,15 @@ public class Populator
         return Set.of(r111, r112, r113, r114, r115, r116);
     }
 
-    public void cleanUpHotels()
-    {
-        List<HotelDTO> hotels = hotelDao.readAll();
-        for (HotelDTO hotel : hotels)
-        {
-            hotelDao.delete(hotel.getId());
+    public void cleanUpHotels() {
+        try (var em = emf.createEntityManager()) {
+            em.getTransaction().begin();
+            em.createQuery("DELETE FROM Hotel").executeUpdate();
+            em.createNativeQuery("ALTER SEQUENCE hotel_id_seq RESTART WITH 1").executeUpdate();
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
+
 }
