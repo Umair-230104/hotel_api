@@ -45,11 +45,11 @@ class HotelDAOTest
 
     }
 
-   /* @AfterEach
+    @AfterEach
     void tearDown()
     {
         populator.cleanUpHotels();
-    }*/
+    }
 
 
     @AfterAll
