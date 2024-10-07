@@ -1,22 +1,26 @@
 GET http://localhost:7070/api/auth/test
 ###
 POST http://localhost:7070/api/auth/register
+content-type: application/json
 
 {
     "username": "admin",
     "password": "test123"
 }
+
 ###
 POST http://localhost:7070/api/auth/login
+content-type: application/json
 
 {
     "username": "admin",
-    "password": "admin123"
+    "password": "test123"
 }
+
 ###
 GET http://localhost:7070/api/protected/user_demo
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJUaG9tYXMgSGFydG1hbm4iLCJzdWIiOiJhZG1pbiIsImV4cCI6MTcxMDMzODg0Miwicm9sZXMiOiJhZG1pbiIsInVzZXJuYW1lIjoiYWRtaW4ifQ.XPbVAL4SXwnnbB6BjApIrPLzlQjQvR6uQ8THWRCxDmU
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJUaG9tYXMgSGFydG1hbm4iLCJzdWIiOiJhZG1pbiIsImV4cCI6MTcyODI5NzY2OCwicm9sZXMiOiJ1c2VyIiwidXNlcm5hbWUiOiJhZG1pbiJ9.yHmpOcP_YYo5KUOGzz3YcRwYyC5IBM62VAATexOTykc
 ###
 GET http://localhost:7070/api/protected/admin_demo
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJUaG9tYXMgSGFydG1hbm4iLCJzdWIiOiJhZG1pbiIsImV4cCI6MTcyNjc0MjQzMSwicm9sZXMiOiJhZG1pbiIsInVzZXJuYW1lIjoiYWRtaW4ifQ.fqrI424ZeAl0hHURlA7QTvrtcr4aQMjam2EPuRT2Syo
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJUaG9tYXMgSGFydG1hbm4iLCJzdWIiOiJhZG1pbiIsImV4cCI6MTcyODI5NzY2OCwicm9sZXMiOiJ1c2VyIiwidXNlcm5hbWUiOiJhZG1pbiJ9.yHmpOcP_YYo5KUOGzz3YcRwYyC5IBM62VAATexOTykc
 ###
