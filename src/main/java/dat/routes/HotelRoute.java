@@ -1,6 +1,7 @@
 package dat.routes;
 
 import dat.controllers.impl.HotelController;
+import dat.security.controllers.SecurityController;
 import io.javalin.apibuilder.EndpointGroup;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
@@ -8,6 +9,7 @@ import static io.javalin.apibuilder.ApiBuilder.*;
 public class HotelRoute {
 
     private final HotelController hotelController = new HotelController();
+    SecurityController securityController = SecurityController.getInstance();
 
     protected EndpointGroup getRoutes() {
 

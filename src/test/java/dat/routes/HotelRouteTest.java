@@ -17,7 +17,8 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
-class HotelRouteTest {
+class HotelRouteTest
+{
     private static Javalin app;
     private static EntityManagerFactory emf = HibernateConfig.getEntityManagerFactoryForTest();
     private static String BASE_URL = "http://localhost:7070/api/v1";
@@ -29,30 +30,35 @@ class HotelRouteTest {
     private static List<HotelDTO> hotels;
 
     @BeforeAll
-    static void init() {
+    static void init()
+    {
         HibernateConfig.setTest(true);
         app = ApplicationConfig.startServer(7070);
     }
 
     @BeforeEach
-    void setUp() {
+    void setUp()
+    {
         hotels = populator.populateHotels();
         california = hotels.get(0);
         hilton = hotels.get(1);
     }
 
     @AfterEach
-    void tearDown() {
+    void tearDown()
+    {
         populator.cleanUpHotels();
     }
 
     @AfterAll
-    static void closeDown() {
+    static void closeDown()
+    {
         ApplicationConfig.stopServer(app);
     }
 
     @Test
-    void testGetAllHotels() {
+    void testGetAllHotels()
+    {
         HotelDTO[] hotelDTOS =
                 given()
                         .when()
@@ -68,7 +74,8 @@ class HotelRouteTest {
     }
 
     @Test
-    void testGetHotelById() {
+    void testGetHotelById()
+    {
         HotelDTO hotelDTO =
                 given()
                         .when()
@@ -83,7 +90,8 @@ class HotelRouteTest {
     }
 
     @Test
-    void testCreateHotel() {
+    void testCreateHotel()
+    {
         Hotel h3 = new Hotel("Hotel 3", "Copenhagen", Hotel.HotelType.STANDARD);
         Hotel createdHotel =
                 given()
@@ -103,7 +111,8 @@ class HotelRouteTest {
     }
 
     @Test
-    void testUpdateHotel() {
+    void testUpdateHotel()
+    {
         california.setHotelName("Hotel California Updated");
         HotelDTO updatedHotel =
                 given()
@@ -123,7 +132,8 @@ class HotelRouteTest {
     }
 
     @Test
-    void deleteHotel() {
+    void deleteHotel()
+    {
         given()
                 .when()
                 .delete(BASE_URL + "/hotels/1")

@@ -27,6 +27,10 @@
 .idea/**/uiDesigner.xml
 .idea/**/dbnavigator.xml
 
+# Ignore the JWT secret config file
+src/main/resources/config.properties
+
+
 # Gradle
 .idea/**/gradle.xml
 .idea/**/libraries

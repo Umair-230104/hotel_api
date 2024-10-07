@@ -5,98 +5,99 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>dat</groupId>
-    <artifactId>hotel_rest_3sem</artifactId>
+    <artifactId>hotel_api</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <hibernate-version>6.2.4.Final</hibernate-version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jackson.version>2.18.0</jackson.version>
+        <lombok.version>1.18.34</lombok.version>
+        <hibernate.version>6.6.1.Final</hibernate.version>
+        <postgresql.version>42.7.4</postgresql.version>
+        <junit.version>5.11.1</junit.version>
+        <hamcrest.version>3.0</hamcrest.version>
         <restassured.version>5.5.0</restassured.version>
-        <testcontainers.version>1.18.0</testcontainers.version>
-        <junit.version>5.9.1</junit.version>
+        <testcontainers.version>1.20.2</testcontainers.version>
+        <hikari.version>6.0.0</hikari.version>
+        <javalin.version>6.3.0</javalin.version>
+        <jbcrypt.version>0.4</jbcrypt.version>
+        <token.security.version>1.0.1</token.security.version>
 
-        <!-- Project properties  -->
-        <!--  token    -->
-        <secret.key>841D8A6C80CBA4FCAD32D5367C18C53B</secret.key>
-        <issuer>cphbusiness.dat</issuer>
-        <token.expiration.time>3600000</token.expiration.time>
-        <!--  DB    -->
-        <db.name>startcode</db.name>
-        <db.username>postgres</db.username>
-        <db.password>postgres</db.password>
-        <db.connection.string>jdbc:postgresql://localhost:5432/</db.connection.string>
-        <!--  Javalin    -->
-        <javalin.port>7070</javalin.port>
+        <!-- DATABASE PROJECT NAME ON SERVER  -->
+        <db.name>jpademo</db.name>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+
     <dependencies>
 
-        <!--   R.E.S.T     -->
-
         <dependency>
-            <groupId>io.javalin</groupId>
-            <artifactId>javalin-bundle</artifactId>
-            <version>6.1.3</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.17.0</version>
+            <groupId>com.github.Hartmannsolution</groupId>
+            <artifactId>TokenSecurity</artifactId>
+            <version>${token.security.version}</version>
         </dependency>
 
-        <!--  Utilities      -->
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.34</version>
-            <scope>provided</scope>
-        </dependency>
-        <!--  DB    -->
-
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>42.7.4</version>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate.orm</groupId>
-            <artifactId>hibernate-core</artifactId>
-            <version>${hibernate-version}</version>
-        </dependency>
-        <dependency>
-            <!--   Hibernate Connection Pool      -->
-            <groupId>com.zaxxer</groupId>
-            <artifactId>HikariCP</artifactId>
-            <version>5.0.1</version>
-        </dependency>
-        <dependency>
-            <!--   Hibernate Connection Pool      -->
-            <groupId>org.hibernate.orm</groupId>
-            <artifactId>hibernate-hikaricp</artifactId>
-            <version>${hibernate-version}</version>
+            <groupId>org.mindrot</groupId>
+            <artifactId>jbcrypt</artifactId>
+            <version>${jbcrypt.version}</version>
         </dependency>
 
-        <!--  Logging   -->
 
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>1.5.7</version>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-core</artifactId>
-            <version>1.5.7</version>
-        </dependency>
+        <!-- SLF4J API -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>2.0.16</version>
         </dependency>
 
-        <!--  TESTING      -->
+        <!-- Logback Classic (SLF4J implementation) -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.5.7</version>
+        </dependency>
 
+        <dependency>
+            <groupId>io.javalin</groupId>
+            <artifactId>javalin</artifactId>
+            <version>${javalin.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <!-- support for "Java 8 Dates" -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <!--        DATABASE-->
+        <!--        https://www.theserverside.com/blog/Coffee-Talk-Java-News-Stories-and-Opinions/The-JPA-and-Hibernate-CRUD-operations-example-->
+        <dependency>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+        <!--        &lt;!&ndash;        https://www.postgresqltutorial.com/postgresql-getting-started/&ndash;&gt;-->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
+        </dependency>
+        <!--        TESTING       -->
+        <!--        https://www.baeldung.com/junit-5-->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -109,18 +110,14 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-params</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
+        <!--        https://www.baeldung.com/hamcrest-core-matchers-->
         <dependency>
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest</artifactId>
-            <version>3.0</version>
+            <version>${hamcrest.version}</version>
             <scope>test</scope>
         </dependency>
+        <!--        https://java.testcontainers.org/quickstart/junit_5_quickstart/-->
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>testcontainers</artifactId>
@@ -145,6 +142,18 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>${hikari.version}</version>
+        </dependency>
+        <!--        https://www.baeldung.com/intro-to-project-lombok-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
             <version>${restassured.version}</version>
@@ -157,13 +166,9 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
     <build>
         <finalName>app</finalName> <!-- This is the name of the jar file -->
         <plugins>
-
-            <!--  Pom.xml properties plugin  -->
-
             <plugin>
                 <!--  https://www.baeldung.com/java-accessing-maven-properties  -->
                 <groupId>org.codehaus.mojo</groupId>
@@ -181,14 +186,13 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <!--   Surefire plugin (Testing)  -->
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0</version>
             </plugin>
+
         </plugins>
     </build>
+
 </project>

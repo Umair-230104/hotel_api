@@ -1,0 +1,22 @@
+GET http://localhost:7070/api/auth/test
+###
+POST http://localhost:7070/api/auth/register
+
+{
+    "username": "admin",
+    "password": "test123"
+}
+###
+POST http://localhost:7070/api/auth/login
+
+{
+    "username": "admin",
+    "password": "admin123"
+}
+###
+GET http://localhost:7070/api/protected/user_demo
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJUaG9tYXMgSGFydG1hbm4iLCJzdWIiOiJhZG1pbiIsImV4cCI6MTcxMDMzODg0Miwicm9sZXMiOiJhZG1pbiIsInVzZXJuYW1lIjoiYWRtaW4ifQ.XPbVAL4SXwnnbB6BjApIrPLzlQjQvR6uQ8THWRCxDmU
+###
+GET http://localhost:7070/api/protected/admin_demo
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJUaG9tYXMgSGFydG1hbm4iLCJzdWIiOiJhZG1pbiIsImV4cCI6MTcyNjc0MjQzMSwicm9sZXMiOiJhZG1pbiIsInVzZXJuYW1lIjoiYWRtaW4ifQ.fqrI424ZeAl0hHURlA7QTvrtcr4aQMjam2EPuRT2Syo
+###
