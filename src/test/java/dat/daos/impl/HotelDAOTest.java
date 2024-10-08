@@ -92,6 +92,19 @@ class HotelDAOTest
         assertEquals(h1.getHotelAddress(), updatedHotel.getHotelAddress());
         assertEquals(h1.getHotelType(), updatedHotel.getHotelType());
     }
+/*
+
+
+    @Test
+    void test1()
+    {
+        int test1 = 1;
+        int test2 = 2;
+
+        assertEquals(test1, test2);
+
+    }*/
+
 
     @Test
     void delete()
