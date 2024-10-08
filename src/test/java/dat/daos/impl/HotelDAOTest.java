@@ -31,8 +31,8 @@ class HotelDAOTest
         HibernateConfig.setTest(true);
         emf = HibernateConfig.getEntityManagerFactory("test_db");
         hotelDAO = HotelDAO.getInstance(emf);
-        roomDAO =  RoomDAO.getInstance(emf);
-        populator = new Populator(hotelDAO,roomDAO, emf);
+        roomDAO = RoomDAO.getInstance(emf);
+        populator = new Populator(hotelDAO, roomDAO, emf);
 
 
     }
@@ -92,18 +92,6 @@ class HotelDAOTest
         assertEquals(h1.getHotelAddress(), updatedHotel.getHotelAddress());
         assertEquals(h1.getHotelType(), updatedHotel.getHotelType());
     }
-/*
-
-
-    @Test
-    void test1()
-    {
-        int test1 = 1;
-        int test2 = 2;
-
-        assertEquals(test1, test2);
-
-    }*/
 
 
     @Test
